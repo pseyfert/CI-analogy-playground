@@ -7,23 +7,23 @@ jobs:
     - script:
       - docker pull debian:jessie
       - docker run -itd --name JESSIE -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie
-      - docker exec JESSIE bash -c 'apt-get update && \
-                                    apt-get install -y git cmake g\+\+-4.8 ninja-build && \
-                                    mkdir builddir && \
-                                    DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -H/repo.git -Bbuilddir && \
-                                    cmake --build builddir'
+      - docker exec JESSIE bash -c 'sudo apt-get update && \
+                                    sudo apt-get install -y git cmake g\+\+-4.8 ninja-build && \
+                                    BUILDDIR=$(mktemp -d builddir) && \
+                                    DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -H/repo.git -B${BUILDDIR} && \
+                                    cmake --build ${BUILDDIR}'
     - script:
       - docker pull debian:stretch
       - docker run -itd --name STRETCH -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch
-      - docker exec STRETCH bash -c 'apt-get update && \
-                                     apt-get install -y git cmake g\+\+-6 ninja-build && \
-                                     mkdir builddir && \
-                                     DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 -H/repo.git -Bbuilddir && \
-                                     cmake --build builddir;'
+      - docker exec STRETCH bash -c 'sudo apt-get update && \
+                                     sudo apt-get install -y git cmake g\+\+-6 ninja-build && \
+                                     BUILDDIR=$(mktemp -d builddir) && \
+                                     DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 -H/repo.git -B${BUILDDIR} && \
+                                     cmake --build ${BUILDDIR};'
     - script:
       - docker pull gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
       - docker run -itd --name CC7 -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
       - docker exec CC7 bash -c 'sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build && \
-                                 mkdir builddir && \
-                                 DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -H/repo.git -Bbuilddir && \
-                                 cmake --build builddir'
+                                 BUILDDIR=$(mktemp -d builddir) && \
+                                 DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -H/repo.git -B${BUILDDIR} && \
+                                 cmake --build ${BUILDDIR}'
