@@ -23,8 +23,8 @@ jobs:
                                      cmake --build ${BUILDDIR};'
     - script:
       - docker pull gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
-      - docker run -itd --name CC7 -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
-      - docker exec CC7 bash -c 'sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build && \
-                                 BUILDDIR=$(mktemp -d builddir) && \
-                                 DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -H/repo.git -B${BUILDDIR} && \
-                                 cmake --build ${BUILDDIR}'
+      - docker run -itd --name CENTOS -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
+      - docker exec CENTOS bash -c 'sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build && \
+                                    BUILDDIR=$(mktemp -d builddir) && \
+                                    DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -H/repo.git -B${BUILDDIR} && \
+                                    cmake --build ${BUILDDIR}'
