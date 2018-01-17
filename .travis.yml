@@ -8,17 +8,17 @@ jobs:
     - script:
       - docker pull debian:jessie
       - docker run -itd --name JESSIE -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie
-      - docker exec JESSIE bash -c 'apt-get update && \
-                                    apt-get install -y git cmake g\+\+-4.8 ninja-build && \
-                                    BUILDDIR=$(mktemp -d builddir) && \
+      - docker exec JESSIE apt-get update
+      - docker exec JESSIE apt-get install -y git cmake g\+\+-4.8 ninja-build
+      - docker exec JESSIE bash -c 'BUILDDIR=$(mktemp -d builddir) && \
                                     DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -H/repo.git -B${BUILDDIR} && \
                                     cmake --build ${BUILDDIR}'
     - script:
       - docker pull debian:stretch
       - docker run -itd --name STRETCH -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch
-      - docker exec STRETCH bash -c 'apt-get update && \
-                                     apt-get install -y git cmake g\+\+-6 ninja-build && \
-                                     BUILDDIR=$(mktemp -d builddir) && \
+      - docker exec STRETCH apt-get update
+      - docker exec STRETCH apt-get install -y git cmake g\+\+-6 ninja-build
+      - docker exec STRETCH bash -c 'BUILDDIR=$(mktemp -d builddir) && \
                                      DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 -H/repo.git -B${BUILDDIR} && \
                                      cmake --build ${BUILDDIR};'
     - script:
