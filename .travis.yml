@@ -33,7 +33,7 @@ jobs:
       - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7 /bin/bash -c '
         set -e
         set -x
-        sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
+        yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
         BUILDDIR=$(mktemp -d)
         cd ${BUILDDIR}
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ /repo.git
