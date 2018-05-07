@@ -9,6 +9,8 @@ jobs:
   include:
     - script:
       - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie /bin/bash -c '
+        set -e
+        set -x
         sudo apt update
         sudo apt install -y git cmake g\+\+-4.8 ninja-build cmake
         BUILDDIR=$(mktemp -d)
