@@ -1,30 +1,39 @@
-language: c++
 sudo: required
+
+language: cpp
+
 services:
   - docker
 
 jobs:
   include:
     - script:
-      - docker pull debian:jessie
-      - docker run -itd --name JESSIE -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie
-      - docker exec JESSIE apt-get update
-      - docker exec JESSIE apt-get install -y git cmake g\+\+-4.8 ninja-build cmake
-      - docker exec JESSIE bash -c 'BUILDDIR=$(mktemp -d) && \
-                                    cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -H/repo.git -B${BUILDDIR} && \
-                                    cmake --build ${BUILDDIR}'
+      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie /bin/bash -c '
+        sudo apt update
+        sudo apt install -y git cmake g\+\+-4.8 ninja-build cmake
+        BUILDDIR=$(mktemp -d)
+        cd ${BUILDDIR}
+        cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 /repo.git
+        cd -
+        cmake --build ${BUILDDIR} '
     - script:
-      - docker pull debian:stretch
-      - docker run -itd --name STRETCH -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch
-      - docker exec STRETCH apt-get update
-      - docker exec STRETCH apt-get install -y git cmake g\+\+-6 ninja-build cmake
-      - docker exec STRETCH bash -c 'BUILDDIR=$(mktemp -d) && \
-                                     cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 -H/repo.git -B${BUILDDIR} && \
-                                     cmake --build ${BUILDDIR};'
+      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch /bin/bash -c '
+        set -e
+        set -x
+        sudo apt update
+        sudo apt install -y git cmake g\+\+-6 ninja-build cmake
+        BUILDDIR=$(mktemp -d)
+        cd ${BUILDDIR}
+        cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 /repo.git
+        cd -
+        cmake --build ${BUILDDIR} '
     - script:
-      - docker pull gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
-      - docker run -itd --name CENTOS -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
-      - docker exec CENTOS bash -c 'sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build && \
-                                    BUILDDIR=$(mktemp -d) && \
-                                    cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -H/repo.git -B${BUILDDIR} && \
-                                    cmake --build ${BUILDDIR}'
+      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7 /bin/bash -c '
+        set -e
+        set -x
+        sudo yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
+        BUILDDIR=$(mktemp -d)
+        cd ${BUILDDIR}
+        cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ /repo.git
+        cd -
+        cmake --build ${BUILDDIR} '

@@ -1,21 +1,21 @@
 build_jessie-gcc48:
   image: debian:jessie
   before_script:
-    - apt-get update
-    - apt-get install -y git cmake g\+\+-4.8 ninja-build
+    - apt update
+    - apt install -y git cmake g\+\+-4.8 ninja-build
   script:
     - mkdir builddir
-    - (cd builddir; DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 ${CI_PROJECT_DIR})
+    - (cd builddir; cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 ${CI_PROJECT_DIR})
     - cmake --build builddir
 
 build_stretch-gcc63:
   image: debian:stretch
   before_script:
-    - apt-get update
-    - apt-get install -y git cmake g\+\+-6 ninja-build
+    - apt update
+    - apt install -y git cmake g\+\+-6 ninja-build
   script:
     - mkdir builddir
-    - (cd builddir; DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 ${CI_PROJECT_DIR})
+    - (cd builddir; cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 ${CI_PROJECT_DIR})
     - cmake --build builddir
 
 build_cc7-CI:
@@ -24,5 +24,5 @@ build_cc7-CI:
     - yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
   script:
     - mkdir builddir
-    - (cd builddir; DIAG_COLOR=auto cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${CI_PROJECT_DIR})
+    - (cd builddir; cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${CI_PROJECT_DIR})
     - cmake --build builddir
