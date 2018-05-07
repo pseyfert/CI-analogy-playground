@@ -9,6 +9,7 @@ jobs:
   include:
     - script: |
         docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie /bin/bash -c '
+        export PS4='\''+ \e[33;1m($0 @ line $LINENO) \$\e[0m '\'' # quotes must be escaped
         set -e
         set -x
         sudo apt update
@@ -20,6 +21,7 @@ jobs:
         cmake --build ${BUILDDIR} '
     - script: |
         docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch /bin/bash -c '
+        export PS4='\''+ \e[33;1m($0 @ line $LINENO) \$\e[0m '\'' # quotes must be escaped
         set -e
         set -x
         sudo apt update
@@ -31,6 +33,7 @@ jobs:
         cmake --build ${BUILDDIR} '
     - script: |
         docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7 /bin/bash -c '
+        export PS4='\''+ \e[33;1m($0 @ line $LINENO) \$\e[0m '\'' # quotes must be escaped
         set -e
         set -x
         yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
