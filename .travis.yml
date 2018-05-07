@@ -7,8 +7,8 @@ services:
 
 jobs:
   include:
-    - script:
-      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie /bin/bash -c '
+    - script: |
+        docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:jessie /bin/bash -c '
         set -e
         set -x
         sudo apt update
@@ -18,8 +18,8 @@ jobs:
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 /repo.git
         cd -
         cmake --build ${BUILDDIR} '
-    - script:
-      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch /bin/bash -c '
+    - script: |
+        docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git debian:stretch /bin/bash -c '
         set -e
         set -x
         sudo apt update
@@ -29,8 +29,8 @@ jobs:
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 /repo.git
         cd -
         cmake --build ${BUILDDIR} '
-    - script:
-      - docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7 /bin/bash -c '
+    - script: |
+        docker run -it -v ${TRAVIS_BUILD_DIR}:/repo.git gitlab-registry.cern.ch/ci-tools/ci-worker:cc7 /bin/bash -c '
         set -e
         set -x
         yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
