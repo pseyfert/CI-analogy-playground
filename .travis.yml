@@ -12,8 +12,8 @@ jobs:
         export PS4='\''+ \e[33;1m($0 @ line $LINENO) \$\e[0m '\'' # quotes must be escaped
         set -e
         set -x
-        sudo apt-get update
-        sudo apt-get install -y git cmake g\+\+-4.8 ninja-build cmake
+        apt update
+        apt install -y git cmake g\+\+-4.8 ninja-build cmake
         BUILDDIR=$(mktemp -d)
         cd ${BUILDDIR}
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 /repo.git
@@ -24,8 +24,8 @@ jobs:
         export PS4='\''+ \e[33;1m($0 @ line $LINENO) \$\e[0m '\'' # quotes must be escaped
         set -e
         set -x
-        sudo apt-get update
-        sudo apt-get install -y git cmake g\+\+-6 ninja-build cmake
+        apt update
+        apt install -y git cmake g\+\+-6 ninja-build cmake
         BUILDDIR=$(mktemp -d)
         cd ${BUILDDIR}
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6 /repo.git
