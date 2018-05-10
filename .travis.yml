@@ -39,6 +39,9 @@ jobs:
         yum install -y glibc-headers glibc-devel make gcc-c++ gcc binutils ninja-build
         BUILDDIR=$(mktemp -d)
         cd ${BUILDDIR}
+        echo "now in ${BUILDDIR}"
         cmake -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ /repo.git
+        echo "ran cmake"
         cd -
+        echo "now building"
         cmake --build ${BUILDDIR} '
